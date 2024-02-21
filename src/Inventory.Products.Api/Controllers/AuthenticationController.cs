@@ -1,6 +1,5 @@
 ﻿using Inventory.Products.Business.Services.IServices;
 using Inventory.Products.DataAccess.Models.Entites;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Products.Api.Controllers

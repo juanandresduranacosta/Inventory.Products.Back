@@ -78,37 +78,37 @@ app.Use(async (context, next) =>
     }
     else
     {
-        //var token = context.Request.Headers["Authorization"].ToString()?.Replace("Bearer ", "");
-        //if (!string.IsNullOrEmpty(token))
-        //{
-        //    var secretKey = Environment.GetEnvironmentVariable("SecretKey");
-        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var token = context.Request.Headers["Authorization"].ToString()?.Replace("Bearer ", "");
+        if (!string.IsNullOrEmpty(token))
+        {
+            var secretKey = Environment.GetEnvironmentVariable("SecretKey");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
-        //    try
-        //    {
-        //        var handler = new JwtSecurityTokenHandler();
-        //        handler.ValidateToken(token, new TokenValidationParameters
-        //        {
-        //            ValidateIssuerSigningKey = true,
-        //            IssuerSigningKey = key,
-        //            ValidateIssuer = false,
-        //            ValidateAudience = false,
-        //            ClockSkew = TimeSpan.Zero
-        //        }, out _);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        context.Response.StatusCode = 401;
-        //        await context.Response.WriteAsync("Invalid token");
-        //        return;
-        //    }
-        //}
-        //else
-        //{
-        //    context.Response.StatusCode = 401;
-        //    await context.Response.WriteAsync("Missing token");
-        //    return;
-        //}
+            try
+            {
+                var handler = new JwtSecurityTokenHandler();
+                handler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out _);
+            }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = 401;
+                await context.Response.WriteAsync("Invalid token");
+                return;
+            }
+        }
+        else
+        {
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsync("Missing token");
+            return;
+        }
         await next.Invoke();
     }
 
