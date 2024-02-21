@@ -18,7 +18,10 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DatabaseConnection": "Data Source=demos.cbu40qqmid64.us-east-1.rds.amazonaws.com;Initial Catalog=demos;User ID=admin;Password=admin123;Persist Security Info=True;",
-        "SecretKey": "qbcxKjjqUca5yC6pB57Kqkr7K3vXaFFhCtsJ8wQe25C62HxaVRFrbQm85GARGQFDQwNgF"
+        "SecretKey": "qbcxKjjqUca5yC6pB57Kqkr7K3vXaFFhCtsJ8wQe25C62HxaVRFrbQm85GARGQFDQwNgF",
+        "UserPool": "us-east-1_6d5sEWhDT",
+        "ClientId": "32g0hl74duelgtm3taqnrgkaft",
+        "QueueBulk": "https://sqs.us-east-1.amazonaws.com/339713139227/products-bulk-queue"
       }
     },
     "IIS Express": {

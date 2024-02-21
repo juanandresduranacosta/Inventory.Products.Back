@@ -2,6 +2,7 @@
 using Inventory.Products.DataAccess.Models.Entites;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Sockets;
 
 namespace Inventory.Products.Api.Controllers
 {
@@ -71,6 +72,21 @@ namespace Inventory.Products.Api.Controllers
             try
             {
                 await _productServices.UpdateProduct(productEntity);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPost("bulk")]
+        public async Task<IActionResult> CreateProductBulk([FromBody] List<ProductEntity> productEntitys)
+        {
+            try
+            {
+                await _productServices.CreateProductBulk(productEntitys);
                 return Ok();
             }
             catch (Exception ex)

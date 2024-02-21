@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Inventory.Products.Business.Services.IServices;
+using Inventory.Products.Business.Utils.IUilts;
 using Inventory.Products.DataAccess.Models.Dtos;
 using Inventory.Products.DataAccess.Models.Entites;
 using Inventory.Products.DataAccess.Repositories.IRepositories;
@@ -9,9 +10,11 @@ namespace Inventory.Products.Business.Services
     public class ProductServices : IProductServices
     {
         private readonly IProductsRepository _productsRepository;
-        public ProductServices(IProductsRepository productsRepository)
+        private readonly ISqsPublisher _sqsPublisher;
+        public ProductServices(IProductsRepository productsRepository, ISqsPublisher sqsPublisher)
         {
             _productsRepository = productsRepository;
+            _sqsPublisher = sqsPublisher;
         }
 
         public async Task CreateProduct(ProductEntity productEntity)
@@ -19,7 +22,7 @@ namespace Inventory.Products.Business.Services
             try
             {
                 var result = await _productsRepository.CreateProduct(productEntity);
-                if(result == 1)
+                if(result != 1)
                 {
                     throw new Exception("Error in insert Product");
                 }
@@ -51,6 +54,22 @@ namespace Inventory.Products.Business.Services
             try
             {
                 return await _productsRepository.GetProducts(product);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
+        public async Task CreateProductBulk(List<ProductEntity> productEntity)
+        {
+            try
+            {
+                foreach (var item in productEntity)
+                {
+                    await _sqsPublisher.PublishMessage(item);
+                }
             }
             catch (Exception ex)
             {

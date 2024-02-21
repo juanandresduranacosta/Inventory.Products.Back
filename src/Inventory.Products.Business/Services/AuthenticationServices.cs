@@ -1,4 +1,6 @@
-﻿using Inventory.Products.Business.Services.IServices;
+﻿using Amazon.CognitoIdentityProvider;
+using Amazon.Extensions.CognitoAuthentication;
+using Inventory.Products.Business.Services.IServices;
 using Inventory.Products.DataAccess.Models.Configurations;
 using Inventory.Products.DataAccess.Models.Entites;
 using Inventory.Products.DataAccess.Repositories.IRepositories;
@@ -27,29 +29,48 @@ namespace Inventory.Products.Business.Services
         {
             try
             {
-                var existUser = await _authenticationRepository.ValidateUser(email, password);
-                if (existUser)
+                AmazonCognitoIdentityProviderClient provider =
+                        new ();
+                CognitoUserPool userPool = new(_logicConfiguration.UserPool, _logicConfiguration.ClientId, provider);
+                CognitoUser user = new (email, _logicConfiguration.ClientId, userPool, provider);
+                InitiateSrpAuthRequest authRequest = new ()
                 {
-                    var secretKey = _logicConfiguration.SecretKey;
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+                    Password = password
+                };
+                AuthFlowResponse authResponse = await user.StartWithSrpAuthAsync(authRequest).ConfigureAwait(false);
+                if (authResponse != null)
+                {
+                    // Decodificar el JWT existente
+                    var existingToken = new JwtSecurityToken(authResponse.AuthenticationResult.AccessToken);
 
-                    var claims = new[]
-                    {
-                        new Claim(JwtRegisteredClaimNames.Sub, email+":"+password),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                    };
-
-                    var token = new JwtSecurityToken(
-                        claims: claims,
-                        expires: DateTime.UtcNow.AddMinutes(10),
-                        signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+                    // Crear una nueva firma para el JWT
+                    var signingCredentials = new SigningCredentials(
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_logicConfiguration.SecretKey)),
+                        SecurityAlgorithms.HmacSha256
                     );
 
-                    var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+                    // Crear un nuevo token con la nueva firma
+                    var handler = new JwtSecurityTokenHandler();
+                    var securityToken = handler.CreateJwtSecurityToken(
+                        existingToken.Issuer,
+                        null,
+                        null,
+                        null,
+                        null,
+                        existingToken.IssuedAt,
+                        signingCredentials
+                    );
+
+                    // Generar el JWT firmado
+                    string signedJwt = handler.WriteToken(securityToken);
+
+
+
+
                     return new()
                     {
-                        JWT = tokenString,
-                        ExpiredIn = 10
+                        JWT = signedJwt,
+                        ExpiredIn = authResponse.AuthenticationResult.ExpiresIn,
                     };
                 }
                 else
@@ -60,7 +81,7 @@ namespace Inventory.Products.Business.Services
             catch (Exception ex)
             {
                 _logger.LogError($"ERROR: in AuthenticationServices AuthenticateUser {ex.Message}");
-                throw;
+                throw new UnauthorizedAccessException("User or password is invalid");
             }
         }
     }

@@ -1,6 +1,9 @@
 
+using Inventory.Products.Api.Worker;
 using Inventory.Products.Business.Services;
 using Inventory.Products.Business.Services.IServices;
+using Inventory.Products.Business.Utils;
+using Inventory.Products.Business.Utils.IUilts;
 using Inventory.Products.DataAccess.Helpers;
 using Inventory.Products.DataAccess.Helpers.IHelpers;
 using Inventory.Products.DataAccess.Models.Configurations;
@@ -25,17 +28,22 @@ builder.Services.AddSwaggerGen();
 IConfiguration Configuration = builder.Configuration;
 Configuration["LogicConfiguration:DatabaseConnection"] = Environment.GetEnvironmentVariable("DatabaseConnection");
 Configuration["LogicConfiguration:SecretKey"] = Environment.GetEnvironmentVariable("SecretKey");
+Configuration["LogicConfiguration:UserPool"] = Environment.GetEnvironmentVariable("UserPool");
+Configuration["LogicConfiguration:ClientId"] = Environment.GetEnvironmentVariable("ClientId");
+Configuration["LogicConfiguration:QueueBulk"] = Environment.GetEnvironmentVariable("QueueBulk");
 builder.Services.Configure<LogicConfiguration>(builder.Configuration.GetSection("LogicConfiguration"));
 
 builder.Services.AddSingleton<IAuthenticationServices, AuthenticationServices>();
 builder.Services.AddSingleton<ICatalogsServices, CatalogsServices>();
 builder.Services.AddSingleton<IProductServices, ProductServices>();
 builder.Services.AddSingleton<IUsersServices, UsersServices>();
+builder.Services.AddSingleton<ISqsPublisher, SqsPublisher>();
 builder.Services.AddSingleton<IAuthenticationRepository, AuthenticationRepository>();
 builder.Services.AddSingleton<ICatalogsRepository, CatalogsRepository>();
 builder.Services.AddSingleton<IProductsRepository, ProductsRepository>();
 builder.Services.AddSingleton<IUsersRepository, UsersRepository>();
 builder.Services.AddSingleton<IDapperHelper, DapperHelper>();
+builder.Services.AddHostedService<ProductWorker>();
 builder.Services.AddCors();
 
 var app = builder.Build();
