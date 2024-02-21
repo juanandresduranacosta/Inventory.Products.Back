@@ -1,0 +1,33 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:56679",
+      "sslPort": 44333
+    }
+  },
+  "profiles": {
+    "Inventory.Products.Api": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7104;http://localhost:5009",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DatabaseConnection": "Data Source=demos.cbu40qqmid64.us-east-1.rds.amazonaws.com;Initial Catalog=demos;User ID=admin;Password=admin123;Persist Security Info=True;",
+        "SecretKey": "qbcxKjjqUca5yC6pB57Kqkr7K3vXaFFhCtsJ8wQe25C62HxaVRFrbQm85GARGQFDQwNgF"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
