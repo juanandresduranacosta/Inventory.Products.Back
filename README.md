@@ -79,16 +79,14 @@ Antes de comenzar, asegúrate de tener instalados los siguientes elementos en tu
     
     
     -- EXEC SpUpdateProducts 1, 1, 'Boxers', 3;
-    CREATE PROCEDURE SpUpdateProducts(
-    	@Pid INT, 
-    	@PtypeElaboration INT ,
-    	@Pname VARCHAR(200) ,
-    	@Pstatus INT 
-    )
-    AS
-    BEGIN
-    	UPDATE Products SET TypeElaboration= @PtypeElaboration, Name= @Pname, Status= @Pstatus, UpdateDate = GETDATE() where Id = @Pid;
-    END;
+	CREATE PROCEDURE SpUpdateProducts(
+		@Pid INT, 
+		@Pstatus INT 
+	)
+	AS
+	BEGIN
+		UPDATE Products SET Status= @Pstatus, UpdateDate = GETDATE() where Id = @Pid;
+	END;
     
     --EXEC SpGetProducts 1, 2;
     
