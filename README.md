@@ -65,17 +65,17 @@ Antes de comenzar, asegúrate de tener instalados los siguientes elementos en tu
     END;
     
     -- EXEC SpInsertProducts 1, 'Medias', 3, 1;
-    CREATE PROCEDURE SpInsertProducts(
-    	@PtypeElaboration INT ,
-    	@Pname VARCHAR(200) ,
-    	@Pstatus INT ,
-    	@PcreationUser INT
-    )
-    AS
-    BEGIN
-    	INSERT INTO Products(TypeElaboration, Name, Status, CreationDate, UpdateDate, CreationUser)
-    		VALUES(@PtypeElaboration, @Pname, @Pstatus, GETDATE(), NULL, @PcreationUser)
-    END;
+    	CREATE  PROCEDURE SpInsertProducts(
+		@PtypeElaboration INT ,
+		@Pname VARCHAR(200) ,
+		@Pstatus INT ,
+		@PcreationUser INT = NULL
+	)
+	AS
+	BEGIN
+		INSERT INTO Products(TypeElaboration, Name, Status, CreationDate, UpdateDate, CreationUser)
+			VALUES(@PtypeElaboration, @Pname, @Pstatus, GETDATE(), NULL, 1)
+	END;
     
     
     -- EXEC SpUpdateProducts 1, 1, 'Boxers', 3;
