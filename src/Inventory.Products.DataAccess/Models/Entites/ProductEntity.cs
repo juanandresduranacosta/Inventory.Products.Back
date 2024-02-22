@@ -14,6 +14,6 @@ namespace Inventory.Products.DataAccess.Models.Entites
         public int Status { get; set; }
         public DateTime? CreationDate { get; set; }
         public DateTime? UpdateDate { get; set; }
-        public int CreationUser { get; set; }
+        //public int CreationUser { get; set; }
     }
 }

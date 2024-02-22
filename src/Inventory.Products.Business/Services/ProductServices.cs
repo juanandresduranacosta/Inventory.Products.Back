@@ -17,15 +17,12 @@ namespace Inventory.Products.Business.Services
             _sqsPublisher = sqsPublisher;
         }
 
-        public async Task CreateProduct(ProductEntity productEntity)
+        public async Task<int> CreateProduct(ProductEntity productEntity)
         {
             try
             {
                 var result = await _productsRepository.CreateProduct(productEntity);
-                if(result != 1)
-                {
-                    throw new Exception("Error in insert Product");
-                }
+                return result;
             }
             catch (Exception ex)
             {
@@ -33,14 +30,18 @@ namespace Inventory.Products.Business.Services
             }
         }
 
-        public async Task UpdateProduct(ProductEntity productEntity)
+        public async Task UpdateProduct(ProductPutEntity productEntity)
         {
             try
             {
-                var result = await _productsRepository.UpdateProduct(productEntity);
-                if (result == 1)
+                if (productEntity.Id == 0)
                 {
-                    throw new Exception("Error in update Product");
+                    throw new Exception("Id is required");
+                }
+                var result = await _productsRepository.UpdateProduct(productEntity);
+                if (result != 1)
+                {
+                    throw new Exception("cError in update Product");
                 }
             }
             catch (Exception ex)

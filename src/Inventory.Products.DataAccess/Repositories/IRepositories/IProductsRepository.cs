@@ -7,6 +7,6 @@ namespace Inventory.Products.DataAccess.Repositories.IRepositories
     {
         Task<SpResponseDto<List<ProductsListDto>>> GetProducts(ProductsFiltersEntity product);
         Task<int> CreateProduct(ProductEntity product);
-        Task<int> UpdateProduct(ProductEntity product);
+        Task<int> UpdateProduct(ProductPutEntity product);
     }
 }

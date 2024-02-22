@@ -6,8 +6,8 @@ namespace Inventory.Products.Business.Services.IServices
     public interface IProductServices
     {
         Task<SpResponseDto<List<ProductsListDto>>> GetProducts(ProductsFiltersEntity product);
-        Task CreateProduct(ProductEntity productEntity);
-        Task UpdateProduct(ProductEntity productEntity);
+        Task<int> CreateProduct(ProductEntity productEntity);
+        Task UpdateProduct(ProductPutEntity productEntity);
         Task CreateProductBulk(List<ProductEntity> productEntity);
     }
 }

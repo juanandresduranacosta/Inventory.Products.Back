@@ -7,11 +7,9 @@ using Inventory.Products.Business.Utils.IUilts;
 using Inventory.Products.DataAccess.Helpers;
 using Inventory.Products.DataAccess.Helpers.IHelpers;
 using Inventory.Products.DataAccess.Models.Configurations;
-using Inventory.Products.DataAccess.Models.Entites;
 using Inventory.Products.DataAccess.Repositories;
 using Inventory.Products.DataAccess.Repositories.IRepositories;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 

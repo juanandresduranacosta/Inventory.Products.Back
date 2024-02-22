@@ -57,8 +57,8 @@ namespace Inventory.Products.Api.Controllers
         {
             try
             {
-                await _productServices.CreateProduct(productEntity);
-                return Ok();
+                var result = await _productServices.CreateProduct(productEntity);
+                return Ok(new ProductPostEntity() { Id = result });
             }
             catch (Exception ex)
             {
@@ -67,12 +67,12 @@ namespace Inventory.Products.Api.Controllers
             }
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateProduct([FromBody] ProductEntity productEntity)
+        public async Task<IActionResult> UpdateProduct([FromBody] ProductPutEntity productEntity)
         {
             try
             {
                 await _productServices.UpdateProduct(productEntity);
-                return Ok();
+                return Ok(productEntity);
             }
             catch (Exception ex)
             {
@@ -87,7 +87,7 @@ namespace Inventory.Products.Api.Controllers
             try
             {
                 await _productServices.CreateProductBulk(productEntitys);
-                return Ok();
+                return Ok(productEntitys);
             }
             catch (Exception ex)
             {

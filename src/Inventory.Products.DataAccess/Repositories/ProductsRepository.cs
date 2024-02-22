@@ -3,7 +3,6 @@ using Inventory.Products.DataAccess.Helpers.IHelpers;
 using Inventory.Products.DataAccess.Models.Dtos;
 using Inventory.Products.DataAccess.Models.Entites;
 using Inventory.Products.DataAccess.Repositories.IRepositories;
-using System.Net.NetworkInformation;
 
 namespace Inventory.Products.DataAccess.Repositories
 {
@@ -23,8 +22,8 @@ namespace Inventory.Products.DataAccess.Repositories
                 p.Add("PtypeElaboration", product.TypeElaboration);
                 p.Add("Pname", product.Name);
                 p.Add("Pstatus", product.Status);
-                p.Add("PcreationUser", product.CreationUser);
-                return await _dapperHelper.ExecuteAsync("SpInsertProducts", p);
+                //p.Add("PcreationUser", product.CreationUser);
+                return await _dapperHelper.QueryFirstOrDefaultAsync<int>("SpInsertProducts", p);
             }
             catch (Exception ex)
             {
@@ -32,15 +31,14 @@ namespace Inventory.Products.DataAccess.Repositories
             }
         }
 
-        public async Task<int> UpdateProduct(ProductEntity product)
+        public async Task<int> UpdateProduct(ProductPutEntity product)
         {
             try
             {
                 DynamicParameters p = new();
-                p.Add("PtypeElaboration", product.TypeElaboration);
-                p.Add("Pname", product.Name);
-                p.Add("Pstatus", product.Status);
-                p.Add("PcreationUser", product.CreationUser);
+                p.Add("Pid", product.Id);
+                p.Add("Pstatus", product.StatusId);
+                //p.Add("PcreationUser", product.CreationUser);
                 return await _dapperHelper.ExecuteAsync("SpUpdateProducts", p);
             }
             catch (Exception ex)
