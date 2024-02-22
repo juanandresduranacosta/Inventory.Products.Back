@@ -210,10 +210,10 @@ Antes de comenzar, asegúrate de tener instalados los siguientes elementos en tu
     VALUES ('Defectuoso');
     
     INSERT INTO ProductsStatus(Name)
-    VALUES ('En Proceso de entrada');
-    
+    VALUES ('En proceso de entrada');
+	
     INSERT INTO ProductsStatus(Name)
-    VALUES ('En Proceso de salida');
+    VALUES ('En proceso de salida');
     
     INSERT INTO ElaborationTypes(Name)
     VALUES('Elaborado a mano');
