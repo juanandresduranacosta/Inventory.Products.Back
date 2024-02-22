@@ -65,30 +65,29 @@ Antes de comenzar, asegúrate de tener instalados los siguientes elementos en tu
     END;
     
     -- EXEC SpInsertProducts 1, 'Medias', 3, 1;
-    	CREATE  PROCEDURE SpInsertProducts(
-		@PtypeElaboration INT ,
-		@Pname VARCHAR(200) ,
-		@Pstatus INT ,
-		@PcreationUser INT = NULL
+    	CREATE PROCEDURE SpInsertProducts(
+	@PtypeElaboration INT ,
+	@Pname VARCHAR(200) ,
+	@Pstatus INT ,
+	@PcreationUser INT = NULL
 	)
 	AS
 	BEGIN
 		INSERT INTO Products(TypeElaboration, Name, Status, CreationDate, UpdateDate, CreationUser)
-			VALUES(@PtypeElaboration, @Pname, @Pstatus, GETDATE(), NULL, 1)
+			VALUES(@PtypeElaboration, @Pname, @Pstatus, GETDATE(), NULL, 1);
+		 SELECT SCOPE_IDENTITY();
 	END;
     
     
     -- EXEC SpUpdateProducts 1, 1, 'Boxers', 3;
-    CREATE PROCEDURE SpUpdateProducts(
-    	@Pid INT, 
-    	@PtypeElaboration INT ,
-    	@Pname VARCHAR(200) ,
-    	@Pstatus INT 
-    )
-    AS
-    BEGIN
-    	UPDATE Products SET TypeElaboration= @PtypeElaboration, Name= @Pname, Status= @Pstatus, UpdateDate = GETDATE() where Id = @Pid;
-    END;
+	CREATE PROCEDURE SpUpdateProducts(
+		@Pid INT, 
+		@Pstatus INT 
+	)
+	AS
+	BEGIN
+		UPDATE Products SET Status= @Pstatus, UpdateDate = GETDATE() where Id = @Pid;
+	END;
     
     --EXEC SpGetProducts 1, 2;
     
